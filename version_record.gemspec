@@ -16,4 +16,7 @@ Gem::Specification.new do |s|
   s.test_files    = `git ls-files -- spec/*`.split("\n")
 
   s.add_development_dependency 'bundler', '~> 1'
+  s.add_development_dependency 'rspec-rails', '~> 3'
+  s.add_development_dependency 'sqlite3', '~> 1'
+  s.add_development_dependency 'rails', '~> 5'
 end
