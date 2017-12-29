@@ -55,4 +55,17 @@ describe VersionRecord::Version do
       it { expect(version.bump!(:patch).to_s).to eq '1.1.3' }
     end
   end
+
+  describe '#comparison' do
+    it { expect(VersionRecord::Version.new('2.1.3')).to be >  VersionRecord::Version.new('2.1.0') }
+    it { expect(VersionRecord::Version.new('2.1.3')).to eq    VersionRecord::Version.new('2.1.3') }
+    it { expect(VersionRecord::Version.new('2.1.3')).to be >= VersionRecord::Version.new('2.1.3') }
+    it { expect(VersionRecord::Version.new('2.2.3')).to be >  VersionRecord::Version.new('2.1.2') }
+    it { expect(VersionRecord::Version.new('2.2.0')).to be >  VersionRecord::Version.new('2.1.3') }
+    it { expect(VersionRecord::Version.new('3.2.0')).to be >  VersionRecord::Version.new('2.1.3') }
+    it { expect(VersionRecord::Version.new('3.0.0')).to be >  VersionRecord::Version.new('2.1.3') }
+    it { expect(VersionRecord::Version.new('3.1.1')).to be >  VersionRecord::Version.new('2.1.1') }
+    it { expect(VersionRecord::Version.new('3.1.3')).to be >  VersionRecord::Version.new('2.5.5') }
+    it { expect(VersionRecord::Version.new('3.1.0')).to be >  VersionRecord::Version.new('3.0.0') }
+  end
 end

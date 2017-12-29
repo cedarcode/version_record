@@ -1,5 +1,7 @@
 module VersionRecord
   class Version
+    include Comparable
+
     attr_accessor :major, :minor, :patch
 
     VERSION_PATTERN = /^(\d+\.)?(\d+\.)?(\d+)$/
@@ -19,6 +21,18 @@ module VersionRecord
     def bump!(segment = :minor)
       send("bump_#{segment}!") if [:major, :minor, :patch].include?(segment)
       self
+    end
+
+    def <=>(other)
+      if (@major <=> other.major).zero? && (@minor <=> other.minor).zero? && (@patch <=> other.patch).zero?
+        0
+      elsif (@major <=> other.major).zero? && (@minor <=> other.minor).zero?
+        @patch <=> other.patch
+      elsif (@major <=> other.major).zero?
+        @minor <=> other.minor
+      else
+        @major <=> other.major
+      end
     end
 
     private
