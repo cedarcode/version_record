@@ -28,6 +28,8 @@ module VersionRecord
     end
 
     def <=>(other)
+      return unless other.is_a?(VersionRecord::Version)
+
       if (@major <=> other.major).zero? && (@minor <=> other.minor).zero? && (@patch <=> other.patch).zero?
         0
       elsif (@major <=> other.major).zero? && (@minor <=> other.minor).zero?
