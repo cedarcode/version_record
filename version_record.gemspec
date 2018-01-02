@@ -15,6 +15,9 @@ Gem::Specification.new do |s|
   s.files         = `git ls-files -- lib/*`.split("\n")
   s.test_files    = `git ls-files -- spec/*`.split("\n")
 
+  s.add_dependency 'activesupport', '~> 5'
+  s.add_dependency 'activerecord',  '~> 5'
+
   s.add_development_dependency 'bundler', '~> 1'
   s.add_development_dependency 'byebug', '~> 9'
   s.add_development_dependency 'rspec-rails', '~> 3'
