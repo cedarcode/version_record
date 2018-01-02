@@ -7,6 +7,16 @@ module VersionRecord
         Object.const_get(klass).class_eval(&block) if block_given?
         @spawned_models << klass.to_sym
       end
+
+      def create_table(table_name)
+        ActiveRecord::Migration.suppress_messages do
+          ActiveRecord::Schema.define do
+            create_table table_name, force: true do |t|
+              yield(t)
+            end
+          end
+        end
+      end
     end
   end
 end
