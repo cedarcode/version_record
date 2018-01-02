@@ -68,4 +68,8 @@ describe VersionRecord::Version do
     it { expect(VersionRecord::Version.new('3.1.3')).to be >  VersionRecord::Version.new('2.5.5') }
     it { expect(VersionRecord::Version.new('3.1.0')).to be >  VersionRecord::Version.new('3.0.0') }
   end
+
+  describe '#to_version' do
+    it { expect(version.to_version).to eq version }
+  end
 end

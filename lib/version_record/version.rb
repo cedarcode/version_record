@@ -18,6 +18,10 @@ module VersionRecord
       "#{@major}.#{@minor}.#{@patch}"
     end
 
+    def to_version
+      self
+    end
+
     def bump!(segment = :minor)
       send("bump_#{segment}!") if [:major, :minor, :patch].include?(segment)
       self
