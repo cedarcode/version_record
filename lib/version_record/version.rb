@@ -22,8 +22,8 @@ module VersionRecord
       self
     end
 
-    def bump!(segment = :minor)
-      send("bump_#{segment}!") if [:major, :minor, :patch].include?(segment)
+    def bump(segment = :minor)
+      send("bump_#{segment}") if [:major, :minor, :patch].include?(segment)
       self
     end
 
@@ -52,17 +52,17 @@ module VersionRecord
       [segments[0].to_i, segments[1].to_i, segments[2].to_i]
     end
 
-    def bump_major!
+    def bump_major
       @major += 1
       @minor = @patch = 0
     end
 
-    def bump_minor!
+    def bump_minor
       @minor += 1
       @patch = 0
     end
 
-    def bump_patch!
+    def bump_patch
       @patch += 1
     end
   end
