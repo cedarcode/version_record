@@ -3,8 +3,8 @@ module VersionRecord
     extend ActiveSupport::Concern
 
     module ClassMethods
-      def versioned
-        VersionRecord::Macros::Versioned.def_versioned(self)
+      def versioned(column_name: :version)
+        VersionRecord::Macros::Versioned.def_versioned(self, column_name)
       end
     end
   end

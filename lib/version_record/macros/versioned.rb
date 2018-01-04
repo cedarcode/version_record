@@ -4,8 +4,7 @@ module VersionRecord
 
       class << self
 
-        def def_versioned(klass)
-          version_column = :version
+        def def_versioned(klass, version_column)
           klass.attribute version_column, :version
         end
       end
