@@ -2,11 +2,11 @@ module VersionRecord
   module Type
     class Version < ActiveRecord::Type::String
       def cast(value)
-        value.to_version
+        value.nil? ? super : value.to_version
       end
 
       def serialize(value)
-        super(value.to_s)
+        value.nil? ? super : super(value.to_s)
       end
     end
   end

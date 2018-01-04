@@ -3,6 +3,7 @@ ENV['DATABASE_URL'] = 'sqlite3://localhost/tmp/version_record_test'
 
 require 'bundler/setup'
 require 'rails'
+require 'byebug'
 if Rails.version.start_with?('4.0')
   require 'support/apps/rails4_0'
 elsif Rails.version.start_with?('4.1')
