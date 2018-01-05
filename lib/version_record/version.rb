@@ -24,15 +24,20 @@ module VersionRecord
     end
 
     def prerelease
-      @prerelease.to_s[1..-1]
+      @prerelease.to_s(false) if @prerelease
     end
 
     def <=>(other)
       return unless other.respond_to?(:to_version)
       other = other.to_version
 
-      if @major == other.major && @minor == other.minor && @patch == other.patch
+      if @major == other.major && @minor == other.minor && @patch == other.patch && @prerelease == other.prerelease
         0
+      elsif @major == other.major && @minor == other.minor && @patch == other.patch
+        return  1 if @prerelease.nil? && other.prerelease
+        return -1 if @prerelease && other.prerelease.nil?
+
+        @prerelease <=> Prerelease.build(other.prerelease)
       elsif @major == other.major && @minor == other.minor
         @patch <=> other.patch
       elsif @major == other.major
@@ -49,7 +54,7 @@ module VersionRecord
         raise ArgumentError, "Malformed version number string #{version}"
       end
 
-      prerelease = Prerelease.new(match[4]) if match[4]
+      prerelease = Prerelease.new(match[4]) if match[4].present?
       [match[1].to_i, match[2].to_i, match[3].to_i, prerelease]
     end
 

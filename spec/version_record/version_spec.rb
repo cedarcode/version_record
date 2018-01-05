@@ -123,7 +123,7 @@ describe VersionRecord::Version do
     end
   end
 
-  describe '#comparison' do
+  describe '#<=>' do
     it { expect(VersionRecord::Version.new('2.1.3')).to be >  VersionRecord::Version.new('2.1.0') }
     it { expect(VersionRecord::Version.new('2.1.3')).to eq    VersionRecord::Version.new('2.1.3') }
     it { expect(VersionRecord::Version.new('2.1.3')).to be >= VersionRecord::Version.new('2.1.3') }
@@ -137,6 +137,17 @@ describe VersionRecord::Version do
     it { expect(VersionRecord::Version.new('3.1.0')).not_to eq nil }
     it { expect(VersionRecord::Version.new('3.1.0')).to eq   '3.1.0' }
     it { expect(VersionRecord::Version.new('3.1.0')).to be > '3.0.0' }
+    it { expect(VersionRecord::Version.new('1.0.0-alpha')).to      be <  VersionRecord::Version.new('1.0.0-alpha.1') }
+    it { expect(VersionRecord::Version.new('1.0.0-alpha.1')).to    be <  VersionRecord::Version.new('1.0.0-alpha.beta') }
+    it { expect(VersionRecord::Version.new('1.0.0-alpha.beta')).to be <  VersionRecord::Version.new('1.0.0-beta') }
+    it { expect(VersionRecord::Version.new('1.0.0-beta')).to       be <  VersionRecord::Version.new('1.0.0-beta.2') }
+    it { expect(VersionRecord::Version.new('1.0.0-beta.2')).to     be <  VersionRecord::Version.new('1.0.0-beta.11') }
+    it { expect(VersionRecord::Version.new('1.0.0-beta.11')).to    be <  VersionRecord::Version.new('1.0.0-rc.1') }
+    it { expect(VersionRecord::Version.new('1.0.0-rc.1')).to       be <  VersionRecord::Version.new('1.0.0') }
+    it { expect(VersionRecord::Version.new('1.0.0.beta.9')).to     be <  VersionRecord::Version.new('1.0.0.beta.10') }
+    it { expect(VersionRecord::Version.new('1.0.0.beta.1')).to     be >  VersionRecord::Version.new('1.0.0.beta') }
+    it { expect(VersionRecord::Version.new('1.0.0.beta')).to       be <  VersionRecord::Version.new('1.0.0.beta.1') }
+    it { expect(VersionRecord::Version.new('1.0.0.beta')).to       eq    VersionRecord::Version.new('1.0.0.beta') }
   end
 
   describe '#to_version' do
