@@ -4,10 +4,8 @@ module VersionRecord
 
     attr_accessor :major, :minor, :patch
 
-    VERSION_PATTERN = /^(\d+)\.(\d+)\.(\d+)(([\.-][0-9A-Za-z-]+)*)$/
-
     def initialize(version)
-      @major, @minor, @patch, @prerelease = parse_version(version)
+      @major, @minor, @patch, @prerelease = Parser.new(version.to_s).parse
     end
 
     def to_s
@@ -45,15 +43,6 @@ module VersionRecord
     end
 
     private
-
-    def parse_version(version)
-      unless match = version.to_s.match(VERSION_PATTERN)
-        raise ArgumentError, "Malformed version number string #{version}"
-      end
-
-      prerelease = Prerelease.new(match[4]) if match[4].present?
-      [match[1].to_i, match[2].to_i, match[3].to_i, prerelease]
-    end
 
     def bump_major
       @major += 1
@@ -93,6 +82,27 @@ module VersionRecord
       return -1 if @prerelease && other.prerelease.nil?
 
       @prerelease <=> Prerelease.build(other.prerelease)
+    end
+
+    class Parser
+      VERSION_PATTERN = /^(\d+)\.(\d+)\.(\d+)(([\.-][0-9A-Za-z-]+)*)$/
+
+      def initialize(version)
+        @version = version
+      end
+
+      def parse
+        error! unless match = @version.match(VERSION_PATTERN)
+        prerelease = Prerelease.new(match[4]) if match[4].present?
+
+        [match[1].to_i, match[2].to_i, match[3].to_i, prerelease]
+      end
+
+      private
+
+      def error!
+        raise ArgumentError, "Malformed version number string #{@version}"
+      end
     end
   end
 end
