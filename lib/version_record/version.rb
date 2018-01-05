@@ -31,19 +31,16 @@ module VersionRecord
       return unless other.respond_to?(:to_version)
       other = other.to_version
 
-      if @major == other.major && @minor == other.minor && @patch == other.patch && @prerelease == other.prerelease
+      if same_segments?(other, :major, :minor, :patch, :prerelease)
         0
-      elsif @major == other.major && @minor == other.minor && @patch == other.patch
-        return  1 if @prerelease.nil? && other.prerelease
-        return -1 if @prerelease && other.prerelease.nil?
-
-        @prerelease <=> Prerelease.build(other.prerelease)
-      elsif @major == other.major && @minor == other.minor
-        @patch <=> other.patch
-      elsif @major == other.major
-        @minor <=> other.minor
+      elsif same_segments?(other, :major, :minor, :patch)
+        compare_by(other, :prerelease)
+      elsif same_segments?(other, :major, :minor)
+        compare_by(other, :patch)
+      elsif same_segments?(other, :major)
+        compare_by(other, :minor)
       else
-        @major <=> other.major
+        compare_by(other, :major)
       end
     end
 
@@ -70,6 +67,31 @@ module VersionRecord
 
     def bump_patch
       @patch += 1
+    end
+
+    # Compares a list of segments
+    #
+    # For example, calling same_segments?(other, :major, :minor) will generate:
+    #
+    #    self.major == other.major && self.minor == other.minor
+    #
+    def same_segments?(other, *segments)
+      segments.all? { |segment| send(segment) == other.send(segment) }
+    end
+
+    def compare_by(other, segment)
+      if [:major, :minor, :patch].include?(segment)
+        send(segment) <=> other.send(segment)
+      else
+        compare_by_prerelease(other)
+      end
+    end
+
+    def compare_by_prerelease(other)
+      return  1 if @prerelease.nil? && other.prerelease
+      return -1 if @prerelease && other.prerelease.nil?
+
+      @prerelease <=> Prerelease.build(other.prerelease)
     end
   end
 end
