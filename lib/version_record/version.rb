@@ -4,18 +4,14 @@ module VersionRecord
 
     attr_accessor :major, :minor, :patch
 
-    VERSION_PATTERN = /^(\d+\.)?(\d+\.)?(\d+)$/
-
-    def self.correct?(version)
-      !!(version.to_s =~ VERSION_PATTERN)
-    end
+    VERSION_PATTERN = /^(\d+)\.(\d+)\.(\d+)(([\.-][0-9A-Za-z-]+)*)$/
 
     def initialize(version)
-      @major, @minor, @patch = parse_version(version)
+      @major, @minor, @patch, @prerelease = parse_version(version)
     end
 
     def to_s
-      "#{@major}.#{@minor}.#{@patch}"
+      "#{@major}.#{@minor}.#{@patch}#{@prerelease}"
     end
 
     def to_version
@@ -25,6 +21,10 @@ module VersionRecord
     def bump(segment = :minor)
       send("bump_#{segment}") if [:major, :minor, :patch].include?(segment)
       self
+    end
+
+    def prerelease
+      @prerelease.to_s[1..-1]
     end
 
     def <=>(other)
@@ -45,12 +45,12 @@ module VersionRecord
     private
 
     def parse_version(version)
-      unless self.class.correct?(version)
+      unless match = version.to_s.match(VERSION_PATTERN)
         raise ArgumentError, "Malformed version number string #{version}"
       end
 
-      segments = version.split('.')
-      [segments[0].to_i, segments[1].to_i, segments[2].to_i]
+      prerelease = Prerelease.new(match[4]) if match[4]
+      [match[1].to_i, match[2].to_i, match[3].to_i, prerelease]
     end
 
     def bump_major

@@ -1,3 +1,4 @@
+require 'version_record/prerelease'
 require 'version_record/version'
 require 'version_record/type/version'
 require 'version_record/macros/versioned'
