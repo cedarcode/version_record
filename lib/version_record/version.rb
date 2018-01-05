@@ -31,11 +31,11 @@ module VersionRecord
       return unless other.respond_to?(:to_version)
       other = other.to_version
 
-      if (@major <=> other.major).zero? && (@minor <=> other.minor).zero? && (@patch <=> other.patch).zero?
+      if @major == other.major && @minor == other.minor && @patch == other.patch
         0
-      elsif (@major <=> other.major).zero? && (@minor <=> other.minor).zero?
+      elsif @major == other.major && @minor == other.minor
         @patch <=> other.patch
-      elsif (@major <=> other.major).zero?
+      elsif @major == other.major
         @minor <=> other.minor
       else
         @major <=> other.major
