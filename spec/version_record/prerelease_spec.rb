@@ -18,11 +18,10 @@ describe VersionRecord::Prerelease do
     it { expect(VersionRecord::Prerelease.new('.alpha').tail).to        be_nil }
   end
 
-  describe '#at' do
-    it { expect(VersionRecord::Prerelease.new('.beta.1.alpha').at(0)).to eq 'beta' }
-    it { expect(VersionRecord::Prerelease.new('.beta.1.alpha').at(1)).to eq '1' }
-    it { expect(VersionRecord::Prerelease.new('.beta.1.alpha').at(2)).to eq 'alpha' }
-    it { expect(VersionRecord::Prerelease.new('.beta.1.alpha').at(3)).to be_nil }
+  describe '#first_segment' do
+    it { expect(VersionRecord::Prerelease.new('.beta.1.alpha').first_segment).to eq 'beta' }
+    it { expect(VersionRecord::Prerelease.new('.1.alpha').first_segment).to eq '1' }
+    it { expect(VersionRecord::Prerelease.new('.alpha').first_segment).to eq 'alpha' }
   end
 
   describe '#<=>' do

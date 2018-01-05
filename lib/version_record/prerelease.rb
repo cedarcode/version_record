@@ -3,7 +3,7 @@ module VersionRecord
     include Comparable
 
     def self.build(string)
-      new(".#{string}")
+      new(".#{string}") if string.present?
     end
 
     def initialize(string)
@@ -15,36 +15,45 @@ module VersionRecord
     end
 
     def tail
-      str = to_a[1..-1].join('.')
-      self.class.new(".#{str}") if str.present?
+      @tail ||= self.class.build(at(1..-1).join('.'))
     end
 
-    def at(index)
-      to_a[index]
+    def first_segment
+      @first_segment ||= at(0)
     end
 
     def <=>(other)
       return unless other.is_a?(Prerelease)
-      segment       = self.at(0)
-      other_segment = other.at(0)
 
-      if segment == other_segment
-        return  1 if self.at(1) && other.at(1).nil?
-        return -1 if self.at(1).nil? && other.at(1)
-        self.tail <=> other.tail
+      if first_segment == other.first_segment
+        compare_by_tail(other)
       else
-        if int?(segment) && int?(other_segment)
-          segment.to_i <=> other_segment.to_i
-        else
-          segment <=> other_segment
-        end
+        compare_by_first_segment(other)
       end
     end
 
     private
 
+    def at(index)
+      to_a[index]
+    end
+
     def to_a
       to_s(false).split('.')
+    end
+
+    def compare_by_tail(other)
+      return  1 if self.tail && other.tail.nil?
+      return -1 if self.tail.nil? && other.tail
+      self.tail <=> other.tail
+    end
+
+    def compare_by_first_segment(other)
+      if int?(first_segment) && int?(other.first_segment)
+        first_segment.to_i <=> other.first_segment.to_i
+      else
+        first_segment <=> other.first_segment
+      end
     end
 
     def int?(str)
