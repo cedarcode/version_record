@@ -69,9 +69,10 @@ module VersionRecord
       @patch += 1
     end
 
-    # Compares a list of segments
+    # Checks if all the segments in other are equal to the ones passed as a
+    # parameter.
     #
-    # For example, calling same_segments?(other, :major, :minor) will generate:
+    # For example, calling same_segments?(other, :major, :minor) will check:
     #
     #    self.major == other.major && self.minor == other.minor
     #
