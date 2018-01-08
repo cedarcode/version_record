@@ -34,8 +34,16 @@ describe VersionRecord::Prerelease do
     it { expect(VersionRecord::Prerelease.new('-beta.2')).to     be <  VersionRecord::Prerelease.new('-beta.11') }
     it { expect(VersionRecord::Prerelease.new('-beta.11')).to    be <  VersionRecord::Prerelease.new('-rc.1') }
     it { expect(VersionRecord::Prerelease.new('.beta.9')).to     be <  VersionRecord::Prerelease.new('.beta.10') }
-    it { expect(VersionRecord::Prerelease.new('.beta.1')).to     be >  VersionRecord::Prerelease.new('.beta') }
     it { expect(VersionRecord::Prerelease.new('.beta')).to       be <  VersionRecord::Prerelease.new('.beta.1') }
     it { expect(VersionRecord::Prerelease.new('.beta')).to       eq    VersionRecord::Prerelease.new('.beta') }
+    it { expect(VersionRecord::Prerelease.new('.beta.1')).to     be >  VersionRecord::Prerelease.new('.beta') }
+    it { expect(VersionRecord::Prerelease.new('.beta.10')).to    be >  VersionRecord::Prerelease.new('.beta.9') }
+    it { expect(VersionRecord::Prerelease.new('-rc.1')).to       be >  VersionRecord::Prerelease.new('-beta.11') }
+    it { expect(VersionRecord::Prerelease.new('-beta.11')).to    be >  VersionRecord::Prerelease.new('-beta.2') }
+    it { expect(VersionRecord::Prerelease.new('-beta.2')).to     be >  VersionRecord::Prerelease.new('-beta') }
+    it { expect(VersionRecord::Prerelease.new('-beta')).to       be >  VersionRecord::Prerelease.new('-alpha.beta') }
+    it { expect(VersionRecord::Prerelease.new('-alpha.beta')).to be >  VersionRecord::Prerelease.new('-alpha.1') }
+    it { expect(VersionRecord::Prerelease.new('-alpha.1')).to    be >  VersionRecord::Prerelease.new('-alpha') }
+    it { expect(VersionRecord::Prerelease.new('-alpha.1')).not_to eq nil }
   end
 end
