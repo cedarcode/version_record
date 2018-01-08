@@ -22,7 +22,7 @@ module VersionRecord
     end
 
     def prerelease
-      @prerelease.to_s(false) if @prerelease
+      @prerelease.name if @prerelease
     end
 
     def <=>(other)

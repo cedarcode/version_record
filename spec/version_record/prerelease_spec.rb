@@ -8,8 +8,10 @@ describe VersionRecord::Prerelease do
 
   describe '#to_s' do
     it { expect(prerelease.to_s).to eq '.beta' }
-    it { expect(prerelease.to_s(true)).to eq '.beta' }
-    it { expect(prerelease.to_s(false)).to eq 'beta' }
+  end
+
+  describe '#name' do
+    it { expect(prerelease.name).to eq 'beta' }
   end
 
   describe '#tail' do

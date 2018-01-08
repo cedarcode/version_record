@@ -10,8 +10,12 @@ module VersionRecord
       @string = string
     end
 
-    def to_s(include_first = true)
-      include_first ? @string : @string[1..-1]
+    def to_s
+      @string
+    end
+
+    def name
+      @string[1..-1]
     end
 
     def tail
@@ -39,7 +43,7 @@ module VersionRecord
     end
 
     def to_a
-      to_s(false).split('.')
+      name.split('.')
     end
 
     def compare_by_tail(other)
