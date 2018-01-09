@@ -11,3 +11,5 @@ module VersionRecord
     end
   end
 end
+
+ActiveRecord::Type.register(:version, VersionRecord::Type::Version)
