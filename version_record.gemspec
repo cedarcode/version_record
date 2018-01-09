@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.version     = VersionRecord::VERSION.dup
   s.platform    = Gem::Platform::RUBY
   s.date        = '2017-12-28'
-  s.summary     = 'Tools for managing versioned records in ActiveRecord'
+  s.summary     = 'Semantic version management for database records using ActiveRecord'
   s.authors     = ['Marcelo Casiraghi']
   s.email       = 'marcelo@cedarcode.com'
   s.homepage    = 'https://github.com/cedarcode/version_record'
