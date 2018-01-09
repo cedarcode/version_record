@@ -13,6 +13,12 @@ module VersionRecord
             Sorting::Simple.new(klass, version_column).by_version(direction)
           end
         end
+
+        def def_latest_version(klass, version_column)
+          klass.define_singleton_method("latest_#{version_column}") do
+            Finder.new(klass, version_column).find_latest
+          end
+        end
       end
     end
   end

@@ -191,4 +191,40 @@ describe VersionRecord::Macros::Versioned do
       it { expect(Release.by_semantic_version).to eq [@release] }
     end
   end
+
+  describe '#latest_version' do
+    context 'with default options' do
+      before do
+        create_table(:documents) do |t|
+          t.string :title
+          t.string :version
+        end
+
+        spawn_model(:Document) do
+          versioned
+        end
+
+        @document = Document.create!(title: 'Title 1', version: '1.1.0')
+      end
+
+      it { expect(Document.latest_version).to eq @document }
+    end
+
+    context 'with custom options' do
+      before do
+        create_table(:releases) do |t|
+          t.string :tag
+          t.string :semantic_version
+        end
+
+        spawn_model(:Release) do
+          versioned column_name: :semantic_version
+        end
+
+        @release = Release.create!(tag: 'jb23hj412', semantic_version: '1.0.0')
+      end
+
+      it { expect(Release.latest_semantic_version).to eq @release }
+    end
+  end
 end

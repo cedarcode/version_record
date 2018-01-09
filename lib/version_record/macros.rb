@@ -6,6 +6,7 @@ module VersionRecord
       def versioned(column_name: :version)
         VersionRecord::Macros::Versioned.def_versioned(self, column_name)
         VersionRecord::Macros::Versioned.def_by_version(self, column_name)
+        VersionRecord::Macros::Versioned.def_latest_version(self, column_name)
       end
     end
   end
